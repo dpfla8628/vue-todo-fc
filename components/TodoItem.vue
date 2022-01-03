@@ -3,12 +3,17 @@
         <div v-if="isEditMode" class="item__inner item--edit">
             <input ref="titleInput" type="text" v-model="editedTitle" @keypress.enter="editedTodo" @keypress.esc="offEditMode" />
             <div class="item__actions">
-                <button key="complete" @click="editedTodo">완료</button>
-                <button key="cancel" @click="offEditMode">취소</button>
+                <button class="btn btn--primary" key="complete" @click="editedTodo"><i class="material-icons">done</i></button>
+                <button class="btn" key="cancel" @click="offEditMode"><i class="material-icons">clear</i></button>
             </div>
         </div>
         <div v-else class="item__inner item--normal">
-            <input type="checkbox" v-model="done" />
+            <label>
+                <input type="checkbox" v-model="done" />
+                <span class="icon">
+                    <i class="material-icons">check</i>
+                </span>
+            </label>
             <div class="item__title-wrap">
                 <div class="item__title">
                     {{ todo.title }}
@@ -19,8 +24,8 @@
             </div>
             <div class="item__actions">
                 <!-- 위의 item__actions와 형식이 같기 때문에 key로 구분해준다-->
-                <button key="update" @click="onEditMode">수정</button>
-                <button key="delete" @click="onDeleteMode">삭제</button>
+                <button class="btn" key="update" @click="onEditMode"><i class="material-icons">edit</i></button>
+                <button class="btn btn--danger" key="delete" @click="onDeleteMode"><i class="material-icons">delete</i></button>
             </div>
         </div>
     </div>
@@ -93,18 +98,4 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    .todo-item {
-        margin-bottom: 10px;
-        .item_inner {
-            display: flex;
-        }
-        .item__date {
-            font-size: 12px;
-        }
-        &.done { //.todo-item인 부모에 done이라는 클래스가 붙어있으면
-            .item__title {
-                text-decoration: line-through;
-            }
-        }
-    }
 </style>

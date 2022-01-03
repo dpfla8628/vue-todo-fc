@@ -1,28 +1,41 @@
 <template>
     <div class="todo-app">
-        <div class="todo-app__Actions">
+        <div class="todo-app__actions">
             <div class="filters">
                 <button :class="{active: filter==='all'}" @click="changeFilter('all')">모든 항목 ({{total}})</button>
                 <button :class="{active: filter==='active'}" @click="changeFilter('active')">해야 할 항목 ({{activeCount}})</button>
                 <button :class="{active: filter==='completed'}" @click="changeFilter('completed')">완료 항목 ({{completedCount}})</button>
             </div>
-            <div class="actions">
-                <input v-model="allDone" type="checkbox" />
-                <button @click="clearCompleted">완료된 항목 삭제</button>
+            <div class="actions clearfix">
+                <label class="float--left">
+                    <input v-model="allDone" type="checkbox" />
+                    <span class="icon"><i class="material-icons">done_all</i></span>
+                </label>
+                <div class="float--right clearfix">
+                    <button class="btn float--left" @click="scrollToTop">
+                        <i class="material-icons">expand_less</i>
+                    </button>
+                    <button class="btn float--left" @click="scrollToBottom">
+                        <i class="material-icons">expand_more</i>
+                    </button>
+                    <button class="btn btn--danger float--left" @click="clearCompleted">
+                        <i class="material-icons">delete_sweep</i>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="todo-app__list">
             <todo-item v-for="todo in filterdTodos" :key="todo.id" :todo="todo"
                        @update-todo="updateTodo" @delete-todo="deleteTodo"/>
         </div>
-        <hr />
-        <todo-creator @create-todo="createTodo" />
+        <todo-creator @create-todo="createTodo" class="todo-app__creator" />
     </div>
 </template>
 
 <script>
 import lowDb from 'lowdb'
 import cryptoRandomString from 'crypto-random-string'
+import scrollTo from 'scroll-to'
 // import _ from 'lodash' => 이처럼 가져와서 _.cloneDeep 으로 사용해도 되지만 너무 많이 가져와서 용량차지 많음
 import _cloneDeep from 'lodash/cloneDeep'
 import _find from 'lodash/find'
@@ -165,12 +178,19 @@ export default {
           this.deleteTodo(todo)
         }
       })
+    },
+    scrollToTop () {
+      scrollTo(0, 0, {
+        ease: 'linear'
+        // duration: 3000
+      })
+    },
+    scrollToBottom () {
+      scrollTo(0, document.body.scrollHeight)
     }
   }
 }
 </script>
-<style scoped lang="scss">
-    button.active {
-        font-weight: bold;
-    }
+<style lang="scss">
+  @import "scss/style";
 </style>
