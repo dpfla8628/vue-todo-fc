@@ -2,9 +2,10 @@
     <div class="todo-app">
         <div class="todo-app__actions">
             <div class="filters">
-                <button :class="{active: filter==='all'}" @click="changeFilter('all')">모든 항목 ({{total}})</button>
-                <button :class="{active: filter==='active'}" @click="changeFilter('active')">해야 할 항목 ({{activeCount}})</button>
-                <button :class="{active: filter==='completed'}" @click="changeFilter('completed')">완료 항목 ({{completedCount}})</button>
+                <!-- <button :class="{active: filter==='all'}" @click="changeFilter('all')">모든 항목 ({{total}})</button> -->
+                <router-link to="all" tag="button">모든 항목 ({{total}})</router-link>
+                <router-link to="active" tag="button">해야 할 항목 ({{activeCount}})</router-link>
+                <router-link to="completed" tag="button">완료 항목 ({{completedCount}})</router-link>
             </div>
             <div class="actions clearfix">
                 <label class="float--left">
@@ -44,8 +45,8 @@ import _assign from 'lodash/assign'
 import _findIndex from 'lodash/findIndex'
 import _forEachRight from 'lodash/forEachRight'
 import LocalStorage from 'lowdb/adapters/LocalStorage'
-import TodoCreator from './TodoCreator.vue'
-import TodoItem from './TodoItem.vue'
+import TodoCreator from '~/components/TodoCreator.vue'
+import TodoItem from '~/components/TodoItem.vue'
 
 export default {
   components: {
@@ -55,13 +56,13 @@ export default {
   data () {
     return {
       db: null,
-      todo: [],
-      filter: 'all'
+      todo: []
+      // filter: 'all'
     }
   },
   computed: {
     filterdTodos () {
-      switch (this.filter) {
+      switch (this.$route.params.id) {
         case 'all':
         default:
           return this.todo
@@ -92,6 +93,7 @@ export default {
   },
   created () {
     this.initDB()
+    console.log(this.$route)
   },
   methods: {
     initDB () {
@@ -147,9 +149,9 @@ export default {
       const foundIndex = _findIndex(this.todo, { id: todo.id })
       this.$delete(this.todo, foundIndex)
     },
-    changeFilter (filter) {
-      this.filter = filter
-    },
+    // changeFilter (filter) {
+    //   this.filter = filter
+    // },
     completeAll (checked) {
       // DB 갱신 return
       const newTodos = this.db
@@ -192,5 +194,9 @@ export default {
 }
 </script>
 <style lang="scss">
-  @import "scss/style";
+  @import "scss/style"; // 절대 경로
+.filters button.router-link-exact-active{
+  background: royalblue;
+  color: white;
+}
 </style>

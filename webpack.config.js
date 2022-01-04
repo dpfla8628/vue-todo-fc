@@ -12,6 +12,7 @@ module.exports = (env, opts) => {
     resolve: {
       extensions: ['.js', '.vue'],
       // 절대 경로 별칭 설정
+      // __dirname : 현재 webpack.config.js가 있는 위치
       alias: {
         '~': path.resolve(__dirname), // E.g. `import '~/components/TodoApp'` in script tag
         'scss': path.resolve(__dirname, './scss/') // E.g. `import "scss/style";` in style tag
